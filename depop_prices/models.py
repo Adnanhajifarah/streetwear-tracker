@@ -6,12 +6,11 @@ from typing import Optional
 
 @dataclass(frozen=True)
 class Listing:
-    """Details extracted from a single eBay listing page.
+    """Details extracted from a single Depop listing page.
 
-    `price` and `currency` are None when the page shows something that
-    isn't a single fixed amount -- auction ranges, "See details", or a
-    layout we couldn't read. `raw_price` always keeps the original
-    string so nothing is lost when parsing gives up.
+    `price` and `currency` are None when the page shows something we
+    couldn't read as a single amount. `raw_price` always keeps the
+    original string so nothing is lost when parsing gives up.
     """
 
     url: str
@@ -19,6 +18,8 @@ class Listing:
     price: Optional[float]
     currency: Optional[str]
     raw_price: str
+    brand: Optional[str] = None
+    available: Optional[bool] = None
 
     @property
     def has_price(self) -> bool:
