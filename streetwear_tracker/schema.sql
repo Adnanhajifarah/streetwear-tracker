@@ -1,4 +1,4 @@
--- Storefronts we poll. Currency is discovered per store, not assumed.
+-- Storefronts being tracked, with the currency each one prices in.
 CREATE TABLE IF NOT EXISTS stores (
     domain      TEXT PRIMARY KEY,
     name        TEXT NOT NULL,
@@ -6,8 +6,7 @@ CREATE TABLE IF NOT EXISTS stores (
     last_polled TEXT
 );
 
--- One row per product we have ever seen. first_seen_at is what makes
--- "new drop" answerable: a product whose first_seen_at is this run is new.
+-- Every product ever seen. first_seen_at identifies new drops.
 CREATE TABLE IF NOT EXISTS products (
     store_domain  TEXT NOT NULL,
     product_id    INTEGER NOT NULL,
@@ -19,9 +18,8 @@ CREATE TABLE IF NOT EXISTS products (
     PRIMARY KEY (store_domain, product_id)
 );
 
--- Append-only log: one row per variant per poll. Never updated, only
--- inserted. Price drops are a comparison between consecutive rows for
--- the same variant, so the history has to survive to be queryable.
+-- Append-only log: one row per variant per poll. Rows are never updated,
+-- since price drops are a comparison between consecutive observations.
 CREATE TABLE IF NOT EXISTS observations (
     store_domain     TEXT    NOT NULL,
     product_id       INTEGER NOT NULL,

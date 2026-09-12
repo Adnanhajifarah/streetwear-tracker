@@ -6,11 +6,10 @@ from typing import Optional, Tuple
 
 @dataclass(frozen=True)
 class Store:
-    """A Shopify storefront we poll.
+    """A Shopify storefront and the currency it prices in.
 
-    `currency` is discovered from the store's /cart.js rather than
-    hardcoded -- Dover Street Market prices in GBP while the US stores
-    price in USD, and products.json never says which.
+    Currency is read from the store's /cart.js at poll time; products.json
+    does not include it.
     """
 
     domain: str
@@ -20,18 +19,12 @@ class Store:
 
 @dataclass(frozen=True)
 class Variant:
-    """One purchasable size of a product, as seen in a single poll.
-
-    `compare_at_price` is the pre-markdown price when an item is on
-    sale, and None otherwise. It is the store telling us directly that
-    a discount exists, so we never have to infer one from two numbers
-    sitting next to each other.
-    """
+    """One purchasable size of a product at a single point in time."""
 
     variant_id: int
     size: str
     price: float
-    compare_at_price: Optional[float]
+    compare_at_price: Optional[float]  # pre-markdown price, None if not on sale
     available: bool
     sku: Optional[str]
 
@@ -42,7 +35,7 @@ class Variant:
 
 @dataclass(frozen=True)
 class Product:
-    """A product and all its variants, as seen in a single poll."""
+    """A product and its variants as seen in a single poll."""
 
     store_domain: str
     product_id: int

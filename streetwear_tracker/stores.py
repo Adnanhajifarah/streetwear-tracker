@@ -1,8 +1,7 @@
-"""The storefronts this tracker polls.
+"""Storefronts polled by the tracker.
 
-Currency is deliberately absent here -- it comes from each store's
-/cart.js at poll time. Hardcoding it is how you end up reporting a
-GBP price as dollars.
+Currency is omitted here on purpose and read from each store's /cart.js
+at poll time.
 """
 
 STORES = (
